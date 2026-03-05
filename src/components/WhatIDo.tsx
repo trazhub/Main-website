@@ -90,8 +90,7 @@ const WhatIDo = () => {
               <h3>DEVELOP</h3>
               <h4>Description</h4>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas
-                quia aliquid laboriosam ducimus sit molestiae.
+                I build high-performance, interactive front-end experiences and robust back-end systems. Leveraging modern frameworks and 3D technologies, I bring creative concepts to life on the web.
               </p>
               <h5>Skillset & tools</h5>
               <div className="what-content-flex">
@@ -131,8 +130,7 @@ const WhatIDo = () => {
               <h3>DESIGN</h3>
               <h4>Description</h4>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas
-                quia aliquid laboriosam ducimus sit molestiae
+                I create captivating user interfaces and engaging 3D assets. From initial concepts and UI design to character modeling and intricate animations, I focus on crafting memorable visual experiences.
               </p>
               <h5>Skillset & tools</h5>
               <div className="what-content-flex">

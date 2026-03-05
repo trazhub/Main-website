@@ -126,24 +126,7 @@ function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
 
 const TechStack = () => {
   const [isActive, setIsActive] = useState(false);
-  const [canvasVisible, setCanvasVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Only mount the Canvas when the section is in the viewport
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setCanvasVisible(true);
-        } else {
-          setCanvasVisible(false);
-        }
-      },
-      { threshold: 0.1 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

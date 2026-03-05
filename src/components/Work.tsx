@@ -13,6 +13,8 @@ interface Project {
   tools: string;
   image: string;
   link: string;
+  github?: string;
+  invite?: string;
 }
 
 const projects: Project[] = [
@@ -55,6 +57,16 @@ const projects: Project[] = [
     tools: "Shopify, Social Media, Online Graphics",
     image: "/images/arge.webp",
     link: "https://arge.in",
+  },
+  {
+    number: "06",
+    name: "Barcore Java",
+    category: "Discord Bot & Status Website",
+    tools: "Java, Discord API, Web",
+    image: "/images/placeholder.webp",
+    link: "https://bardcore.opop.eu.org/",
+    github: "https://github.com/trazhub/Barcore-java",
+    invite: "https://discord.com/oauth2/authorize?client_id=1262341877273989180",
   },
 ];
 
@@ -120,6 +132,20 @@ const Work = () => {
                 </div>
                 <h4>Tools and features</h4>
                 <p>{project.tools}</p>
+                {(project.github || project.invite) && (
+                  <div style={{ display: "flex", gap: "15px", marginTop: "15px" }}>
+                    {project.github && (
+                      <a href={project.github} target="_blank" rel="noreferrer" style={{ textDecoration: "underline", fontSize: "0.9rem" }}>
+                        GitHub Repo
+                      </a>
+                    )}
+                    {project.invite && (
+                      <a href={project.invite} target="_blank" rel="noreferrer" style={{ textDecoration: "underline", fontSize: "0.9rem" }}>
+                        Add Bot to Server
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
               <WorkImage image={project.image} alt={project.name} link={project.link} />
             </div>

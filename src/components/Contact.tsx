@@ -10,14 +10,8 @@ const Contact = () => {
           <div className="contact-box">
             <h4>Email</h4>
             <p>
-              <a href="mailto:hello@traz.dev" data-cursor="disable">
-                hello@traz.dev
-              </a>
-            </p>
-            <h4>Portfolio</h4>
-            <p>
-              <a href="https://opop.eu.org" target="_blank" data-cursor="disable">
-                opop.eu.org
+              <a href="mailto:trazverse@gmail.com" data-cursor="disable">
+                trazverse@gmail.com
               </a>
             </p>
           </div>
@@ -46,14 +40,6 @@ const Contact = () => {
               className="contact-social"
             >
               aRGe <MdArrowOutward />
-            </a>
-            <a
-              href="https://cloud.opop.eu.org"
-              target="_blank"
-              data-cursor="disable"
-              className="contact-social"
-            >
-              TrazCloud <MdArrowOutward />
             </a>
           </div>
           <div className="contact-box">

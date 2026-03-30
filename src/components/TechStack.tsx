@@ -133,24 +133,30 @@ const TechStack = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
       setIsActive(scrollY > 600);
     };
-    document.querySelectorAll(".header a").forEach((elem) => {
-      const element = elem as HTMLAnchorElement;
-      element.addEventListener("click", () => {
-        const interval = setInterval(() => {
-          handleScroll();
-        }, 10);
-        setTimeout(() => {
-          clearInterval(interval);
-        }, 1000);
-      });
+
+    const headerLinks = document.querySelectorAll(".header a");
+    const clickHandler = () => {
+      const interval = setInterval(handleScroll, 10);
+      setTimeout(() => clearInterval(interval), 1000);
+    };
+
+    headerLinks.forEach((elem) => {
+      elem.addEventListener("click", clickHandler);
     });
+
     window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Initial check
+
     return () => {
+      headerLinks.forEach((elem) => {
+        elem.removeEventListener("click", clickHandler);
+      });
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   const materials = useMemo(() => {
-    return textures.map(
+    const mats = textures.map(
       (texture) =>
         new THREE.MeshPhysicalMaterial({
           map: texture,
@@ -162,7 +168,14 @@ const TechStack = () => {
           clearcoat: 0.1,
         })
     );
+    return mats;
   }, []);
+
+  useEffect(() => {
+    return () => {
+      materials.forEach((mat) => mat.dispose());
+    };
+  }, [materials]);
 
   return (
     <div className="techstack">

@@ -58,28 +58,28 @@ const SocialIcons = () => {
     <div className="icons-section">
       <div className="social-icons" data-cursor="icons" id="social">
         <span>
-          <a href="https://www.linkedin.com/in/trazverse/" target="_blank">
+          <a href="https://www.linkedin.com/in/trazverse/" target="_blank" aria-label="LinkedIn Profile">
             <FaLinkedinIn />
           </a>
         </span>
         <span>
-          <a href="https://github.com/trazhub" target="_blank">
+          <a href="https://github.com/trazhub" target="_blank" aria-label="GitHub Profile">
             <FaGithub />
           </a>
         </span>
         <span>
-          <a href="https://arge.in" target="_blank">
+          <a href="https://arge.in" target="_blank" aria-label="Arge Storefront">
             <MdStorefront />
           </a>
         </span>
       </div>
       <a
         className="resume-button"
-        href="https://opop.eu.org"
-        target="_blank"
+        href="mailto:trazverse@gmail.com"
         data-cursor="disable"
+        aria-label="Email Me"
       >
-        <HoverLinks text="PORTFOLIO" />
+        <HoverLinks text="CONTACT" />
         <span>
           <TbNotes />
         </span>

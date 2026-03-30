@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./styles/Loading.css";
 import { useLoading } from "../context/LoadingProvider";
 
@@ -9,29 +9,48 @@ const Loading = ({ percent }: { percent: number }) => {
   const [loaded, setLoaded] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
-
-  if (percent >= 100) {
-    setTimeout(() => {
-      setLoaded(true);
-      setTimeout(() => {
-        setIsLoaded(true);
-      }, 1000);
-    }, 600);
-  }
+  const hasStartedExit = useRef(false);
 
   useEffect(() => {
-    import("./utils/initialFX").then((module) => {
-      if (isLoaded) {
-        setClicked(true);
-        setTimeout(() => {
+    if (percent >= 100 && !loaded) {
+      const timer = setTimeout(() => {
+        setLoaded(true);
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [percent, loaded]);
+
+  useEffect(() => {
+    if (loaded && !isLoaded) {
+      const timer = setTimeout(() => {
+        setIsLoaded(true);
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [loaded, isLoaded]);
+
+  useEffect(() => {
+    if (isLoaded && !hasStartedExit.current) {
+      hasStartedExit.current = true;
+      setClicked(true);
+      
+      import("./utils/initialFX").then((module) => {
+        const timer = setTimeout(() => {
           if (module.initialFX) {
-            module.initialFX();
+            try {
+              module.initialFX();
+            } catch (error) {
+              console.error("Error in initialFX:", error);
+            }
           }
           setIsLoading(false);
-        }, 900);
-      }
-    });
-  }, [isLoaded]);
+        }, 300);
+      }).catch(err => {
+        console.error("Failed to load initialFX module:", err);
+        setIsLoading(false);
+      });
+    }
+  }, [isLoaded, setIsLoading]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
     const { currentTarget: target } = e;
@@ -48,7 +67,7 @@ const Loading = ({ percent }: { percent: number }) => {
         <a href="/#" className="loader-title" data-cursor="disable">
           Logo
         </a>
-        <div className={`loaderGame ${clicked && "loader-out"}`}>
+        <div className={`loaderGame ${clicked ? "loader-out" : ""}`}>
           <div className="loaderGame-container">
             <div className="loaderGame-in">
               {[...Array(27)].map((_, index) => (
@@ -67,15 +86,30 @@ const Loading = ({ percent }: { percent: number }) => {
           </Marquee>
         </div>
         <div
-          className={`loading-wrap ${clicked && "loading-clicked"}`}
+          className={`loading-wrap ${clicked ? "loading-clicked" : ""}`}
           onMouseMove={(e) => handleMouseMove(e)}
         >
           <div className="loading-hover"></div>
-          <div className={`loading-button ${loaded && "loading-complete"}`}>
+          <div className={`loading-button ${loaded ? "loading-complete" : ""}`}>
             <div className="loading-container">
               <div className="loading-content">
                 <div className="loading-content-in">
                   Loading <span>{percent}%</span>
+                  {percent >= 90 && percent < 100 && (
+                    <div style={{ 
+                      fontSize: '12px', 
+                      marginTop: '10px', 
+                      opacity: 0.7,
+                      position: 'absolute',
+                      bottom: '-25px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: '100%',
+                      textAlign: 'center'
+                    }}>
+                      Starting Experience...
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="loading-box"></div>
@@ -94,42 +128,52 @@ export default Loading;
 
 export const setProgress = (setLoading: (value: number) => void) => {
   let percent: number = 0;
+  let hasFinished = false;
 
-  let interval = setInterval(() => {
-    if (percent <= 50) {
-      let rand = Math.round(Math.random() * 5);
-      percent = percent + rand;
+  const interval = setInterval(() => {
+    if (hasFinished) return;
+
+    if (percent < 92) {
+      // Fast progress to 92%
+      percent += Math.round(Math.random() * 5);
+      if (percent > 92) percent = 92;
       setLoading(percent);
-    } else {
-      clearInterval(interval);
-      interval = setInterval(() => {
-        percent = percent + Math.round(Math.random());
+    } else if (percent < 99) {
+      // Very slow progress from 92 to 99% (waiting for assets)
+      if (Math.random() > 0.8) {
+        percent += 1;
         setLoading(percent);
-        if (percent > 91) {
-          clearInterval(interval);
-        }
-      }, 2000);
+      }
     }
-  }, 100);
+  }, 150);
 
   function clear() {
+    hasFinished = true;
     clearInterval(interval);
     setLoading(100);
   }
 
   function loaded() {
     return new Promise<number>((resolve) => {
+      hasFinished = true;
       clearInterval(interval);
-      interval = setInterval(() => {
-        if (percent < 100) {
-          percent++;
-          setLoading(percent);
+      let current = percent;
+      const finishInterval = setInterval(() => {
+        if (current < 100) {
+          current++;
+          setLoading(current);
         } else {
-          resolve(percent);
-          clearInterval(interval);
+          clearInterval(finishInterval);
+          resolve(100);
         }
-      }, 2);
+      }, 10);
     });
   }
+  
+  // Auto-finish after 8 seconds if not triggered
+  setTimeout(() => {
+    if (!hasFinished) loaded();
+  }, 8000);
+
   return { loaded, percent, clear };
 };

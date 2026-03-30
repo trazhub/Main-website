@@ -40,16 +40,17 @@
   padding: 80px;
   display: flex;
   flex-direction: column;
-  width: 600px;
+  width: 450px;
   box-sizing: border-box;
   border-right: 1px solid #363636;
   flex-shrink: 0;
-  gap: 50px;
-  justify-content: start;
+  gap: 30px;
+  justify-content: center;
 }
 
+/* Remove alternating direction for text-only boxes */
 .work-flex .work-box:nth-child(even) {
-  flex-direction: column-reverse;
+  flex-direction: column;
 }
 
 .work-flex::before,

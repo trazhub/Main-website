@@ -1,5 +1,4 @@
 import "./styles/Work.css";
-import WorkImage from "./WorkImage";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect } from "react";
@@ -11,7 +10,6 @@ interface Project {
   name: string;
   category: string;
   tools: string;
-  image: string;
   link: string;
   github?: string;
   invite?: string;
@@ -23,15 +21,13 @@ const projects: Project[] = [
     name: "TrazCloud",
     category: "Full Stack Web Application",
     tools: "Next.js, Cloudflare R2, Prisma, Tailwind CSS",
-    image: "/images/trazcloud.webp",
-    link: "https://cloud.opop.eu.org/",
+    link: "https://github.com/trazhub",
   },
   {
     number: "02",
     name: "LocalMiner",
     category: "Desktop Tool / P2P Network",
     tools: "Port Forwarding, P2P, Minecraft Server Hosting",
-    image: "/images/placeholder.webp",
     link: "https://github.com/LocalMiner/Installer",
   },
   {
@@ -39,7 +35,6 @@ const projects: Project[] = [
     name: "Discord Attachment Viewer",
     category: "Security Tool",
     tools: "JavaScript, Discord API, Web Security",
-    image: "/images/placeholder.webp",
     link: "https://github.com/trazhub/Discord-Attachment-Viewer-",
   },
   {
@@ -47,7 +42,6 @@ const projects: Project[] = [
     name: "Storefileswithjs",
     category: "File Storage Utility",
     tools: "Node.js, VPS Storage, File Transfer",
-    image: "/images/placeholder.webp",
     link: "https://github.com/trazhub/Storefileswithjs",
   },
   {
@@ -55,7 +49,6 @@ const projects: Project[] = [
     name: "aRGe",
     category: "E-Commerce & Social Media",
     tools: "Shopify, Social Media, Online Graphics",
-    image: "/images/arge.webp",
     link: "https://arge.in",
   },
   {
@@ -63,8 +56,7 @@ const projects: Project[] = [
     name: "Barcore Java",
     category: "Discord Bot & Status Website",
     tools: "Java, Discord API, Web",
-    image: "/images/placeholder.webp",
-    link: "https://bardcore.opop.eu.org/",
+    link: "https://github.com/trazhub/Barcore-java",
     github: "https://github.com/trazhub/Barcore-java",
     invite: "https://discord.com/oauth2/authorize?client_id=1262341877273989180",
   },
@@ -76,19 +68,20 @@ const Work = () => {
 
     function setTranslateX() {
       const box = document.getElementsByClassName("work-box");
+      if (box.length === 0) return;
       const rectLeft = document
         .querySelector(".work-container")!
         .getBoundingClientRect().left;
       const rect = box[0].getBoundingClientRect();
       const parentWidth = box[0].parentElement!.getBoundingClientRect().width;
-      let padding: number =
+      const padding: number =
         parseInt(window.getComputedStyle(box[0]).padding) / 2;
       translateX = rect.width * box.length - (rectLeft + parentWidth) + padding;
     }
 
     setTranslateX();
 
-    let timeline = gsap.timeline({
+    const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: ".work-section",
         start: "top top",
@@ -146,8 +139,21 @@ const Work = () => {
                     )}
                   </div>
                 )}
+                <div style={{ marginTop: "30px" }}>
+                  <a 
+                    href={project.link} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    style={{ 
+                      textDecoration: "underline", 
+                      fontWeight: "500",
+                      color: "var(--accentColor)" 
+                    }}
+                  >
+                    View Project
+                  </a>
+                </div>
               </div>
-              <WorkImage image={project.image} alt={project.name} link={project.link} />
             </div>
           ))}
         </div>

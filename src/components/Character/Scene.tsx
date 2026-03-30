@@ -162,9 +162,9 @@ const Scene = () => {
         window.clearTimeout(debounce);
         scene.clear();
         renderer.dispose();
-        window.removeEventListener("resize", () =>
-          handleResize(renderer, camera, canvasDiv, character)
-        );
+        window.removeEventListener("resize", () => {
+          if (character) handleResize(renderer, camera, canvasDiv, character);
+        });
         if (currentCanvasDiv) {
           currentCanvasDiv.removeChild(renderer.domElement);
         }

@@ -115,7 +115,7 @@ export function setCharTimeline(
           0
         )
         .fromTo(
-          monitor.position,
+          monitorMesh.position,
           { y: -10, z: 2 },
           { y: 0, z: 0, delay: 1.5, duration: 3 },
           0

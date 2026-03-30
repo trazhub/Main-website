@@ -35,7 +35,7 @@ const Loading = ({ percent }: { percent: number }) => {
       setClicked(true);
       
       import("./utils/initialFX").then((module) => {
-        const timer = setTimeout(() => {
+        setTimeout(() => {
           if (module.initialFX) {
             try {
               module.initialFX();
